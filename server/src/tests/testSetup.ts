@@ -2,7 +2,7 @@ import { beforeAll, afterEach, afterAll } from 'vitest'
 import mongoose from 'mongoose'
 import pgClient from '../db/postgres/pgClient'
 import connectMongoDB from '../db/mongodb/connectMongoDB'
-import GitHubPayload from '../models/GitHubPayload'
+import WebhookPayload from '../models/WebhookPayload'
 
 beforeAll(async () => {
   await pgClient.connect().then(() => {
@@ -18,7 +18,7 @@ afterEach(async () => {
   await pgClient.query(deleteBinsQuery)
   await pgClient.query(deleteRequestsQuery)
 
-  await GitHubPayload.deleteMany({})
+  await WebhookPayload.deleteMany({})
   console.log('After Each: All Postgre and Mongo entries deleted')
 })
 

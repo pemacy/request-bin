@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Request Stats</title>
+</head>
+<body>
+    <h1>Request Stats</h1>
+    <p>URL: <%= req.url %></p>
+    <p>Base URL: <%= req.baseUrl %></p>
+    <p>Original URL: <%= req.originalUrl %></p>
+    <p>PATH: <%= req.path %></p>
+    <p>METHOD: <%= req.method %></p>
+    <h2>Records</h2>
+    <ul>
+      <% recordsWithDocs.forEach(function(record) { %>
+        <li>
+          Method: <%= record.method %>, 
+          Bin Path: <%= record.bin_id %>, 
+          Created At: <%= record.created_at %>
+          Mongo: <%= Object.keys(record) %>
+        </li>
+      <% }) %>
+    </ul>
+</body>
+</html>
+

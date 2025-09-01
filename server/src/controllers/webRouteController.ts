@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import GitHubPayload from '../models/GitHubPayload'
+import WebhookPayload from '../models/WebhookPayload'
 import pgClient from '../db/postgres/pgClient'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -8,23 +8,27 @@ const MS_IN_DAY = MS_IN_HOUR * 24
 const MS_IN_WEEK = MS_IN_DAY * 7
 const MS_IN_MONTH = MS_IN_DAY * 30
 
-export const showBin = async (req: Request, res: Response) => {
-  res.render('bins', res)
+// GET '/'
+export const getBins = async (req: Request, res: Response) => {
+  console.log('COOKIES', req.cookies)
+  if (req.cookies.session_id) {
+    console.log('SESSION ID:', req.cookies.session_id)
+    const sessionId = req.cookies.session_id
+    const query = 'SELECT * FROM bins WHERE session_id = $1'
+    const values = [sessionId]
+    const bins = await pgClient.query(query, values)
+    res.json({ bins: bins.rows })
+  } else {
+    const sessionId = uuidv4()
+    res.set('Set-Cookie', `session_id=${sessionId} max-age=${MS_IN_MONTH} httpOnly=true`)
+    res.json({ bins: [] })
+  }
 }
 
-export const main = async (req: Request, res: Response) => {
-  console.log('PAYLOAD:', req.body)
-  console.log('PATH:', req.path)
-  console.log('METHOD:', req.method)
-  console.log('URL:', req.url)
-  console.log('BASE URL:', req.baseUrl)
-  console.log('ORIGINAL URL:', req.originalUrl)
-  res.send('<h1>Hello</h1>')
-}
-
+// POST '/bins/new/:bin_id'
 export const createBin = async (req: Request, res: Response) => {
   // request will have name of bin
-  const bin_id = req.params.id
+  const bin_id = req.params.bin_id
   let session_id: string
   console.log('COOKIES:', req.cookies)
   console.log('BIN ID:', bin_id)
@@ -40,52 +44,70 @@ export const createBin = async (req: Request, res: Response) => {
   }
   console.log('SESSION ID:', session_id)
 
-  const query = "INSERT INTO bins (id, session_id) VALUES ($1, $2)"
+  const query = "INSERT INTO bins (id, session_id) VALUES ($1, $2) RETURNING *"
   const values = [bin_id, session_id]
-  try {
-    await pgClient.query(query, values)
-    res.status(200).send()
-  } catch (err) {
-    console.log("A Postgres Error occured", err)
-    res.status(400).send()
-  }
+  const queryResult = await pgClient.query(query, values)
+  const bin = queryResult.rows[0]
+  res.status(200).json(bin)
 }
 
-export const getBins = async (req: Request, res: Response) => {
-  console.log('COOKIES', req.cookies)
-  if (req.cookies.session_id) {
-    console.log('SESSION ID:', req.cookies.session_id)
-    const sessionId = req.cookies.session_id
-    const query = 'SELECT * FROM bins WHERE session_id = $1'
-    const values = [sessionId]
-    const bins = await pgClient.query(query, values)
-    res.json({ bins: bins.rows })
-  } else {
-    res.json({ bins: [] })
-  }
-}
-
+// GET '/:bin_id/records'
 export const getRecords = async (req: Request, res: Response) => {
+  const bin_id = req.params.bin_id
+  const query = 'SELECT * FROM records WHERE bin_id = $1'
+  const queryResult = await pgClient.query(query, [bin_id])
+  const recordsWithDocs = await Promise.all(
+    queryResult.rows.map(addMongoDoc)
+  )
+
+  res.json(recordsWithDocs)
 }
 
+// POST '/:bin_id'
 export const createRecord = async (req: Request, res: Response) => {
   console.log('=== CREATE RECORD CONTROLLER ===')
 
   const payload = req.body
   const bin_id = req.params.bin_id
   const method = req.method
-  const newPayload = new GitHubPayload({ payload })
+  const newPayload = new WebhookPayload({ payload })
   const savedPayload = await newPayload.save()
   const mongoDocId = savedPayload._id.toString()
 
   const query = 'INSERT INTO records (method, bin_id, mongo_doc_id) VALUES ($1, $2, $3) RETURNING *'
   const values = [method, bin_id, mongoDocId]
-  await pgClient.query(query, values)
+  const queryResult = await pgClient.query(query, values)
+  const record = queryResult.rows[0]
   console.log('Record Created')
-  res.status(200).send()
+  res.status(200).json(record)
 }
 
-// Path for testing cookies
+
+// TESTING Controllers
+
+// GET '/:bin_id/show'
+export const testingShowRecords = async (req: Request, res: Response) => {
+  const recordsWithDocs = await getRecords(req, res)
+  res.render('showRecords', { req, recordsWithDocs })
+}
+
+export const testingShowBins = async (req: Request, res: Response) => {
+  const records = await getBins(req, res)
+  res.render('showBins', { req, records })
+}
+
+export const testingCreateBin = async (req: Request, res: Response) => {
+  const records = await getBins(req, res)
+  res.redirect('/testing/')
+}
+
+export const testingCreateRecord = async (req, res) => {
+  const recrods = await getBins(req, res)
+  res.render('showRecords', { req, recordsWithDocs })
+
+}
+
+// GET '/hello_world'
 export const helloWorld = async (req: Request, res: Response) => {
   console.log("COOKIES:", req.cookies)
   console.log("HEADERS:", req.headers)
@@ -95,4 +117,18 @@ export const helloWorld = async (req: Request, res: Response) => {
     res.cookie('hello', 'World')
     res.send('No hello cookie in request')
   }
+}
+
+// TYPES
+interface RecordRow {
+  id: number
+  method: string
+  bin_id: string
+  created_at: Date
+  mongo_doc_id: string | null
+}
+
+// UTILITY FUNCTIONS
+const addMongoDoc = async (record: RecordRow) => {
+  return WebhookPayload.findOne({ _id: record.mongo_doc_id })
 }
