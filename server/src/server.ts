@@ -1,6 +1,6 @@
 import app from './app'
 import connectMongoDB from './db/mongodb/connectMongoDB'
-import pgClient = require('./db/postgres/pgClient')
+import pgClient from './db/postgres/pgClient'
 
 const PORT = process.env.PORT || 3000
 

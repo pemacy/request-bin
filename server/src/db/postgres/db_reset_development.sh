@@ -4,7 +4,7 @@
 set -e
 
 set -a        # automatically export all variables
-source .env.test   # load variables from .env into the current shell
+source .env.development   # load variables from .env into the current shell
 set +a
 
 dropdb-17 --if-exists "$PGDATABASE"

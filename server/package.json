@@ -4,24 +4,41 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "ts-node-dev src/server.ts",
+    "server:dev": "export NODE_ENV=development && npm run server",
+    "test:watch": "vitest",
+    "test:watch:inspect": "vitest --no-file-parallelism --poolOptions.threads.singleThread --inspect",
+    "build": "tsc",
+    "prod": "export NODE_ENV=development && node dist/server/src/todos_api_server.js",
+    "db:reset:test": "bash ./src/db/postgres/db_reset_test.sh",
+    "db:reset:development": "bash ./src/db/postgres/db_reset_development.sh",
+    "db:reset:production": "bash ./src/db/postgres/db_reset_production.sh",
+    "db:reset:all": "npm run db:reset:test && npm run db:reset:development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.1",
     "cors": "^2.8.5",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mongoose": "^8.18.0",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cookie-session": "^2.0.49",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
+    "@types/pg": "^8.15.5",
     "@types/supertest": "^6.0.3",
     "dotenv": "^17.2.1",
+    "i": "^0.3.7",
     "supertest": "^7.1.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2",

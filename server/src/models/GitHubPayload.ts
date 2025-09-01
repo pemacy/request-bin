@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const gitHubPayloadSchema = new mongoose.Schema({
   id: String,
-  content: String,
+  payload: {},
 })
 
 gitHubPayloadSchema.set('toJSON', {
@@ -13,5 +13,5 @@ gitHubPayloadSchema.set('toJSON', {
   }
 })
 
-const gitHubPayload = mongoose.model('GitHubPayload', gitHubPayloadSchema)
-export default gitHubPayload
+const GitHubPayload = mongoose.model('GitHubPayloads', gitHubPayloadSchema)
+export default GitHubPayload

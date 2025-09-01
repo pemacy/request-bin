@@ -1,8 +1,15 @@
-import express, { Request, Response } from 'express'
-import pgClient from '../db/postgres/pgClient'
-import gitHubPayload from '../models/GitHubPayload'
+import express from 'express'
 import * as webRouteController from '../controllers/webRouteController'
 
-const route = express.Router()
+const webHookRoutes = express.Router()
 
-route.post('/', webRouteController.createRecord)
+webHookRoutes.get('/hello_world', webRouteController.helloWorld)
+webHookRoutes.get('/', webRouteController.main)
+
+webHookRoutes.post('/bins/new/:id', webRouteController.createBin)
+webHookRoutes.get('/bins', webRouteController.getBins)
+webHookRoutes.get('/:bin_id', webRouteController.showBin)
+webHookRoutes.post('/:bin_id', webRouteController.createRecord)
+webHookRoutes.get('/bins/:bin_id/records', webRouteController.getRecords)
+
+export default webHookRoutes
