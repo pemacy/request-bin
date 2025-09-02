@@ -64,6 +64,7 @@ export const getRecords = async (req: Request, res: Response) => {
 }
 
 // POST '/:bin_id'
+// POST '/bins/:bin_id/records'
 export const createRecord = async (req: Request, res: Response) => {
   console.log('=== CREATE RECORD CONTROLLER ===')
 
@@ -82,6 +83,40 @@ export const createRecord = async (req: Request, res: Response) => {
   res.status(200).json(record)
 }
 
+// DETELE /bins/:bin_id/records/:record_id
+export const deleteRecord = async (req: Request, res: Response) => {
+  const binId = req.params.bin_id
+  const recordId = req.params.record_id
+  const query = 'DELETE FROM records WHERE bin_id = $1 AND id = $1 RETURNING *'
+  const result = await pgClient.query(query, [binId, recordId])
+  const record = result.rows[0]
+  res.json(record)
+}
+
+// DETELE /bins/:bin_id/records
+export const deleteRecords = async (req: Request, res: Response) => {
+  const query = 'DELETE FROM records RETURNING *'
+  const result = await pgClient.query(query)
+  const records = result.rows
+  res.json(records)
+}
+
+// DETELE /bins/:bin_id
+export const deleteBin = async (req: Request, res: Response) => {
+  const binId = req.params.bin_id
+  const query = 'DELETE FROM bins WHERE id = $1 RETURNING *'
+  const result = await pgClient.query(query, [binId])
+  const bin = result.rows[0]
+  res.json(bin)
+}
+
+// DETELE /bins
+export const deleteBins = async (req: Request, res: Response) => {
+  const query = 'DELETE FROM bins RETURNING *'
+  const deleteResult = await pgClient.query(query)
+  const deletedRows = deleteResult.rows
+  res.json(deletedRows)
+}
 
 // TESTING Controllers
 
@@ -101,10 +136,9 @@ export const testingCreateBin = async (req: Request, res: Response) => {
   res.redirect('/testing/')
 }
 
-export const testingCreateRecord = async (req, res) => {
-  const recrods = await getBins(req, res)
-  res.render('showRecords', { req, recordsWithDocs })
-
+export const testingCreateRecord = async (req: Request, res: Response) => {
+  //const recrods = await getBins(req, res)
+  //res.render('showRecords', { req, recordsWithDocs })
 }
 
 // GET '/hello_world'
