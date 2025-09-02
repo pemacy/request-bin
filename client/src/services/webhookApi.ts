@@ -11,6 +11,11 @@ export const getBins = async () => {
   return bins
 }
 
+export const getRecords = async (bin_id: string) => {
+  const records = await axios.get(recordsUrl(bin_id))
+  return records
+}
+
 export const createBin = async (bin_id: string) => {
   const bin = await axios.post(binUrl(bin_id))
   return bin
@@ -18,7 +23,7 @@ export const createBin = async (bin_id: string) => {
 
 export const createRecord = async (bin_id: string) => {
   const record = await axios.post(baseUrl + '/' + bin_id)
-  return record
+  return record.data
 }
 
 export const deleteBins = async () => {

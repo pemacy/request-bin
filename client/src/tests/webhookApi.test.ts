@@ -31,12 +31,23 @@ test.skip('createBin - with session cookie', async () => {
 
 test('createRecord', async () => {
   const binId = 'abc123'
-  const createBinRes = await webhookApi.createBin(binId)
-  const bin = createBinRes.data
-  console.log(bin)
+  await webhookApi.createBin(binId)
+
   const createRecordRes = await webhookApi.createRecord(binId)
   const record = createRecordRes.data
-  console.log(record)
+  expect(record.bin_id).toBe(binId)
+
+  const binsRes = await webhookApi.getBins()
+  const bins = binsRes.data
+  expect(bins.length).toBe(0)
 })
 
+test('getRecords', async () => {
+  const binId = 'abc123'
+  await webhookApi.createBin(binId)
+  await webhookApi.createBin(binId)
 
+  const recordsRes = await webhookApi.getRecords(binId)
+  const records = recordsRes.data
+  expect(records.length).toBe(2)
+})
