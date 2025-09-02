@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import WebhookPayload from '../models/WebhookPayload'
 import pgClient from '../db/postgres/pgClient'
 import { v4 as uuidv4 } from 'uuid'
+import * as utils from './controllerUtils'
 
 const MS_IN_HOUR = 60 * 60 * 1000
 const MS_IN_DAY = MS_IN_HOUR * 24
@@ -17,11 +18,11 @@ export const getBins = async (req: Request, res: Response) => {
     const query = 'SELECT * FROM bins WHERE session_id = $1'
     const values = [sessionId]
     const bins = await pgClient.query(query, values)
-    res.json({ bins: bins.rows })
+    res.json(bins.rows)
   } else {
     const sessionId = uuidv4()
     res.set('Set-Cookie', `session_id=${sessionId} max-age=${MS_IN_MONTH} httpOnly=true`)
-    res.json({ bins: [] })
+    res.json([])
   }
 }
 
@@ -57,7 +58,7 @@ export const getRecords = async (req: Request, res: Response) => {
   const query = 'SELECT * FROM records WHERE bin_id = $1'
   const queryResult = await pgClient.query(query, [bin_id])
   const recordsWithDocs = await Promise.all(
-    queryResult.rows.map(addMongoDoc)
+    queryResult.rows.map(utils.addMongoDoc)
   )
 
   res.json(recordsWithDocs)
@@ -98,71 +99,41 @@ export const deleteRecords = async (req: Request, res: Response) => {
   const query = 'DELETE FROM records RETURNING *'
   const result = await pgClient.query(query)
   const records = result.rows
+  console.log("DELETE RECORDS RESULT:", records)
+  await Promise.all(records.map(utils.deleteMongoDoc))
   res.json(records)
 }
 
 // DETELE /bins/:bin_id
 export const deleteBin = async (req: Request, res: Response) => {
   const binId = req.params.bin_id
+  const recordsQuery = 'SELECT * FROM records WHERE bin_id = $1'
+  const recordsResult = await pgClient.query(recordsQuery, [binId])
+  const records = recordsResult.rows
+
   const query = 'DELETE FROM bins WHERE id = $1 RETURNING *'
   const result = await pgClient.query(query, [binId])
   const bin = result.rows[0]
+
+  await Promise.all(records.map(utils.deleteMongoDoc))
   res.json(bin)
 }
 
 // DETELE /bins
 export const deleteBins = async (req: Request, res: Response) => {
+  const sessionId = req.cookies.session_id
+
+  // Get all bins with that session id
+  const binsQuery = 'SELECT * FROM bins WHERE session_id = $1'
+  const binsResult = await pgClient.query(binsQuery, [sessionId])
+  const bins = binsResult.rows
+
+  const recordArrays = await Promise.all(bins.map(utils.getBinRecords))
+  const records = recordArrays.flat()
+  await Promise.all(records.map(utils.deleteMongoDoc))
+
   const query = 'DELETE FROM bins RETURNING *'
   const deleteResult = await pgClient.query(query)
   const deletedRows = deleteResult.rows
   res.json(deletedRows)
-}
-
-// TESTING Controllers
-
-// GET '/:bin_id/show'
-export const testingShowRecords = async (req: Request, res: Response) => {
-  const recordsWithDocs = await getRecords(req, res)
-  res.render('showRecords', { req, recordsWithDocs })
-}
-
-export const testingShowBins = async (req: Request, res: Response) => {
-  const records = await getBins(req, res)
-  res.render('showBins', { req, records })
-}
-
-export const testingCreateBin = async (req: Request, res: Response) => {
-  const records = await getBins(req, res)
-  res.redirect('/testing/')
-}
-
-export const testingCreateRecord = async (req: Request, res: Response) => {
-  //const recrods = await getBins(req, res)
-  //res.render('showRecords', { req, recordsWithDocs })
-}
-
-// GET '/hello_world'
-export const helloWorld = async (req: Request, res: Response) => {
-  console.log("COOKIES:", req.cookies)
-  console.log("HEADERS:", req.headers)
-  if (req?.cookies?.hello) {
-    res.send('hello cookie value: ' + req.cookies.hello)
-  } else {
-    res.cookie('hello', 'World')
-    res.send('No hello cookie in request')
-  }
-}
-
-// TYPES
-interface RecordRow {
-  id: number
-  method: string
-  bin_id: string
-  created_at: Date
-  mongo_doc_id: string | null
-}
-
-// UTILITY FUNCTIONS
-const addMongoDoc = async (record: RecordRow) => {
-  return WebhookPayload.findOne({ _id: record.mongo_doc_id })
 }

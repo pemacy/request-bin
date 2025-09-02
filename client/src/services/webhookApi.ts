@@ -7,41 +7,45 @@ const recordsUrl = (bin_id: string) => binUrl(bin_id) + '/records'
 const recordUrl = (bin_id: string, record_id: string) => recordsUrl(bin_id) + '/' + record_id
 
 export const getBins = async () => {
-  const bins = await axios.get(baseUrl)
-  return bins
+  const res = await axios.get(baseUrl)
+  return res.data
 }
 
 export const getRecords = async (bin_id: string) => {
-  const records = await axios.get(recordsUrl(bin_id))
-  return records
+  const res = await axios.get(recordsUrl(bin_id))
+  return res.data
 }
 
 export const createBin = async (bin_id: string) => {
-  const bin = await axios.post(binUrl(bin_id))
-  return bin
+  const res = await axios.post(binUrl(bin_id))
+  return res.data
 }
 
-export const createRecord = async (bin_id: string) => {
-  const record = await axios.post(baseUrl + '/' + bin_id)
-  return record.data
+interface WebhookPackage {
+  [key: string]: any;
+}
+
+export const createRecord = async (bin_id: string, webhookPackage: WebhookPackage) => {
+  const res = await axios.post(baseUrl + '/' + bin_id, { data: webhookPackage })
+  return res.data
 }
 
 export const deleteBins = async () => {
-  const bins = axios.delete(binsUrl)
-  return bins
+  const res = await axios.delete(binsUrl)
+  return res.data
 }
 
 export const deleteBin = async (bin_id: string) => {
-  const bin = axios.delete(binUrl(bin_id))
-  return bin
+  const res = await axios.delete(binUrl(bin_id))
+  return res.data
 }
 
 export const deleteRecords = async (bin_id: string) => {
-  const records = axios.delete(recordsUrl(bin_id))
-  return records
+  const res = await axios.delete(recordsUrl(bin_id))
+  return res.data
 }
 
 export const deleteRecord = async (bin_id: string, record_id: string) => {
-  const record = axios.delete(recordUrl(bin_id, record_id))
-  return record
+  const res = await axios.delete(recordUrl(bin_id, record_id))
+  return res.data
 }

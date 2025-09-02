@@ -14,11 +14,4 @@ webHookRoutes.delete('/bins/:bin_id/records', webRouteController.deleteRecords)
 webHookRoutes.delete('/bins/:bin_id', webRouteController.deleteBin)
 webHookRoutes.delete('/bins/:bin_id/records/:record_id', webRouteController.deleteRecord)
 
-// Test routes
-webHookRoutes.get('/testing/hello_world', webRouteController.helloWorld)
-webHookRoutes.get('/testing/bins', webRouteController.testingShowBins)
-webHookRoutes.get('/testing/:bin_id', webRouteController.testingShowRecords)
-webHookRoutes.get('/testing/bins/new/:bin_id', webRouteController.testingCreateBin)
-webHookRoutes.get('/testing/:bin_id/records', webRouteController.testingCreateRecord)
-
 export default webHookRoutes
