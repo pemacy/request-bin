@@ -1,20 +1,15 @@
 import * as webhookApi from '../services/webhookApi'
 import { v4 as uuidv4 } from 'uuid'
 import type { FormEvent } from "react"
-
-type Bin = {
-  id: string;
-  created_at: Date;
-  session_id: string;
-}
+import type { BinInterface } from '../types/types'
 
 type FormProps = {
-  setAllBins?: React.Dispatch<React.SetStateAction<Bin[]>>;
+  setAllBins?: React.Dispatch<React.SetStateAction<BinInterface[]>>;
 }
 
 const handleOnSubmit = async (
   e: FormEvent<HTMLFormElement>,
-  setAllBins: React.Dispatch<React.SetStateAction<Bin[]>>
+  setAllBins: React.Dispatch<React.SetStateAction<BinInterface[]>>
 ) => {
   e.preventDefault()
   const formData = new FormData(e.currentTarget)
