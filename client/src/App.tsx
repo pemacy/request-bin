@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import BinHeader from './components/BinHeader'
 import Form from './components/Form'
+import type { BinInterface } from './types/types.ts'
 import Sidebar from './components/Sidebar'
 import * as webhookApi from './services/webhookApi'
 import type { Bin, RecordWithDoc } from './utils/types'
 
 function App() {
-  const [bins, setBins] = useState<Bin[]>([]);
+  const [bins, setBins] = useState<BinInterface[]>([]);
   const [selectedBin, setSelectedBin] = useState<Bin>();
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<RecordWithDoc>();
+
 
   useEffect(() => {
     const fetchBins = async () => {
