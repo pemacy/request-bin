@@ -1,25 +1,29 @@
 import { Request, Response } from 'express'
 import * as api from './webRouteController'
+import pgClient from '../db/postgres/pgClient'
 
 // GET '/:bin_id/show'
-export const showRecords = async (req: Request, res: Response) => {
-  const recordsWithDocs = await api.getRecords(req, res)
-  res.render('showRecords', { req, recordsWithDocs })
+export const getRecords = async (req: Request, res: Response) => {
+  req.cookies.session_id = 'test'
+  await api.getRecords(req, res)
 }
 
-export const showBins = async (req: Request, res: Response) => {
-  const records = await api.getBins(req, res)
-  res.render('showBins', { req, records })
+export const getBins = async (req: Request, res: Response) => {
+  console.log("GET BINS TESTING")
+  const query = 'SELECT * FROM bins WHERE session_id = $1'
+  const values = ['test']
+  const bins = await pgClient.query(query, values)
+  res.json(bins.rows)
 }
 
 export const createBin = async (req: Request, res: Response) => {
-  const records = await api.getBins(req, res)
-  res.redirect('/testing/')
+  req.cookies.session_id = 'test'
+  await api.createBin(req, res)
 }
 
 export const createRecord = async (req: Request, res: Response) => {
-  //const recrods = await getBins(req, res)
-  //res.render('showRecords', { req, recordsWithDocs })
+  req.cookies.session_id = 'test'
+  await api.createRecord(req, res)
 }
 
 // GET '/hello_world'

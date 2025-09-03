@@ -29,14 +29,35 @@ const handleOnSubmit = async (
 }
 
 const Form = ({ setBins }: FormProps) => {
-  if (setBins === undefined) throw new Error('setAllBins property is undefined')
-  const bin_id = uuidv4().slice(0, 7)
+  if (!setBins) throw new Error('setAllBins property is undefined');
+
+  const bin_id = uuidv4().slice(0, 7);
+
   return (
-    <form onSubmit={(e) => handleOnSubmit(e, setBins)}>
-      <input type='text' value={bin_id} name='bin_id' />
-      <button type='submit'>Create New Bin</button>
+    <form
+      onSubmit={(e) => handleOnSubmit(e, setBins)}
+      className="max-w-md bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-md space-y-4"
+    >
+      <fieldset className="flex flex-col space-y-1">
+        <label htmlFor="bin_id" className="text-sm font-medium text-gray-300">
+          Bin Name
+        </label>
+        <input
+          type="text"
+          value={bin_id}
+          name="bin_id"
+          className="bg-gray-900 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-sky-600"
+          readOnly
+        />
+      </fieldset>
+      <button
+        type="submit"
+        className="w-full py-2 bg-sky-700 hover:bg-sky-600 rounded-md font-medium transition"
+      >
+        Create New Bin
+      </button>
     </form>
-  )
-}
+  );
+};
 
 export default Form

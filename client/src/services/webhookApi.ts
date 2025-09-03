@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type { Payload } from '../utils/types'
 
 const baseUrl = import.meta.env.VITE_WEBHOOK_URL
 const binsUrl = baseUrl + '/bins'
@@ -21,7 +22,7 @@ export const createBin = async (bin_id: string) => {
   return res.data
 }
 
-export const createRecord = async (bin_id: string, webhookPackage: WebhookPackage) => {
+export const createRecord = async (bin_id: string, webhookPackage: Payload) => {
   const res = await axios.post(baseUrl + '/' + bin_id, { data: webhookPackage })
   return res.data
 }
