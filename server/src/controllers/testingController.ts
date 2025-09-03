@@ -5,6 +5,7 @@ import pgClient from '../db/postgres/pgClient'
 // GET '/'
 // GET '/bins'
 export const getBins = async (req: Request, res: Response) => {
+  req.cookies.session_id = 'test'
   console.log("GET BINS TESTING")
   const query = 'SELECT * FROM bins WHERE session_id = $1'
   const values = ['test']
@@ -19,9 +20,10 @@ export const getRecords = async (req: Request, res: Response) => {
 }
 
 // GET '/bins/:bin_id/'
-export const getbin = async (req: Request, res: Response) => {
+export const getBin = async (req: Request, res: Response) => {
+  req.cookies.session_id = 'test'
   const bin_id = req.params.bin_id
-  const query = 'SELECT * FROM bin WHERE bin_id = $1'
+  const query = 'SELECT * FROM bins WHERE id = $1'
   const queryResult = await pgClient.query(query, [bin_id])
   const bin = queryResult.rows[0]
 
