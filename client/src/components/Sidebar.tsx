@@ -10,7 +10,7 @@ bins = {
 */
 
 
-const Sidebar = ({ bins = {} }) => {
+const Sidebar = ({ bins }) => {
   const list = Object.values(bins);
   return (
     <nav className="sidebar">

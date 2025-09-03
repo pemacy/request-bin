@@ -21,10 +21,6 @@ export const createBin = async (bin_id: string) => {
   return res.data
 }
 
-interface WebhookPackage {
-  [key: string]: any;
-}
-
 export const createRecord = async (bin_id: string, webhookPackage: WebhookPackage) => {
   const res = await axios.post(baseUrl + '/' + bin_id, { data: webhookPackage })
   return res.data

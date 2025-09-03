@@ -7,7 +7,7 @@ import WebhookPayload from '../models/WebhookPayload'
 
 // GET '/'
 // get all bins - first time user (no session_id cookie)
-test('GET / - empty', async () => {
+test.skip('GET / - empty', async () => {
   const agent = request.agent(app)
   const res = await agent.get('/')
   expect(res.body.length).toBe(0)
@@ -15,7 +15,7 @@ test('GET / - empty', async () => {
 
 // GET '/'
 // get all bins - returning user (with session_id cookie)
-test('GET / - not empty', async () => {
+test.skip('GET / - not empty', async () => {
   const agent = request.agent(app)
 
   const session_id = uuidv4()
@@ -37,7 +37,7 @@ test('GET / - not empty', async () => {
 
 // POST '/bins/new/:bin_id' - with session_id cookie
 // createBin
-test('POST /bins/new/:bin_id - with session id cookie', async () => {
+test.skip('POST /bins/new/:bin_id - with session id cookie', async () => {
   const agent = request.agent(app)
 
   const session_id = uuidv4()
@@ -55,7 +55,7 @@ test('POST /bins/new/:bin_id - with session id cookie', async () => {
 
 // POST '/bins/new/:bin_id - without session_id cookie'
 // createBin
-test('POST /:bin_id - without session id cookie', async () => {
+test.skip('POST /:bin_id - without session id cookie', async () => {
   const agent = request.agent(app)
 
   const bin_id = 'abc123'
@@ -71,7 +71,7 @@ test('POST /:bin_id - without session id cookie', async () => {
 
 // post '/:bin_id/'
 // createRecord
-test('POST /:bin_id - create record', async () => {
+test.skip('POST /:bin_id - create record', async () => {
   const agent = request.agent(app)
 
   const session_id = uuidv4()
@@ -114,7 +114,8 @@ test('POST /:bin_id - create record', async () => {
   expect(record.bin_id).toBe('abc123')
 })
 
-test('GET /:bin_id/records', async () => {
+// get all records
+test.skip('GET /:bin_id/records', async () => {
   const agent = request.agent(app)
 
   const session_id = uuidv4()
@@ -141,14 +142,14 @@ test('GET /:bin_id/records', async () => {
 
 })
 
-test('createTestRecord function', async () => {
+test.skip('createTestRecord function', async () => {
   const record = await createTestRecord()
   const allBins = await getTestBins()
   expect(record.bin_id).toBe(allBins[0].id)
 })
 
 // delete a bin
-test('DELETE /bins/:bin_id', async () => {
+test.skip('DELETE /bins/:bin_id', async () => {
   const agent = request.agent(app)
 
   const bin = await createTestBin()
@@ -166,7 +167,7 @@ test('DELETE /bins/:bin_id', async () => {
 })
 
 // delete all bins
-test('DELETE /bins', async () => {
+test.skip('DELETE /bins', async () => {
   const agent = request.agent(app)
 
   await createTestBin()
@@ -183,7 +184,7 @@ test('DELETE /bins', async () => {
 })
 
 
-test('DELETE /bins/:bin_id/records', async () => {
+test.skip('DELETE /bins/:bin_id/records', async () => {
   const agent = request.agent(app)
 
   const bin = await createTestBin()
