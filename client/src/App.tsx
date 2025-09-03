@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import BinHeader from './components/BinHeader'
-import Form from './components/Form'
-import type { BinInterface } from './types/types.ts'
-import Sidebar from './components/Sidebar'
+import BinHeader from './components/BinPage/BinHeader'
+import Form from './components/MainPage/Form'
+import Sidebar from './components/MainPage/Sidebar'
+import Modal from './components/MainPage/Modal'
 import * as webhookApi from './services/webhookApi'
-import type { Bin, RecordWithDoc } from './utils/types'
+import type { RecordWithDoc, BinInterface, AppView } from './utils/types'
 
 function App() {
+  const [view, setView] = useState<AppView>('home'); // controls which components are visible
   const [bins, setBins] = useState<BinInterface[]>([]);
-  const [selectedBin, setSelectedBin] = useState<Bin>();
+  const [selectedBin, setSelectedBin] = useState<BinInterface>();
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
-  const [selectedRecord, setSelectedRecord] = useState<RecordWithDoc>();
 
 
   useEffect(() => {
@@ -22,19 +22,41 @@ function App() {
 
     fetchBins()
   }, [])
+
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col md:flex-row">
-      {/* Form: 3/4 width on medium+ screens */}
-      <main className="flex-[3] w-full p-6 md:p-10">
-        <h1 className="text-2xl font-semibold mb-6">Create a New Bin</h1>
-        {import.meta.env.VITE_WEBHOOK_URL}
-        <Form setBins={setBins} />
-      </main>
+      {(view === 'home' || view === 'modal') && (
+        <>
+          <main className="flex-[3] w-full p-6 md:p-10">
+            <h1 className="text-2xl font-semibold mb-6">Create a New Bin</h1>
+            {import.meta.env.VITE_WEBHOOK_URL}
+            <Form
+              setBins={setBins}
+              setView={setView}
+              setSelectedBin={setSelectedBin}
+            />
+          </main>
 
-      {/* Sidebar: 1/4 width on medium+ screens */}
-      <aside className="flex-[1] w-full md:w-auto border-t md:border-t-0 md:border-l border-gray-700 bg-gray-800">
-        <Sidebar bins={bins} />
-      </aside>
+          <aside className="flex-[1] w-full md:w-auto border-t md:border-t-0 md:border-l border-gray-700 bg-gray-800">
+            <Sidebar
+              bins={bins}
+              setRecords={setRecords}
+              setView={setView} />
+          </aside>
+
+        </>
+      )}
+
+      {/* Modal */}
+      {view === 'modal' && selectedBin && (
+        <Modal bin={selectedBin} />
+      )}
+
+      {/* Bin records view */}
+      {view === 'bins' && selectedBin &&
+        <BinHeader bin={selectedBin} records={records} />
+      }
+
     </div>
   );
 }

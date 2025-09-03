@@ -12,6 +12,11 @@ export const getBins = async () => {
   return res.data
 }
 
+export const getBin = async (bin_id: string) => {
+  const res = await axios.get(binUrl(bin_id))
+  return res.data
+}
+
 export const getRecords = async (bin_id: string) => {
   const res = await axios.get(recordsUrl(bin_id))
   return res.data

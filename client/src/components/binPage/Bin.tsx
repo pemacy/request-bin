@@ -1,14 +1,15 @@
 // import React from 'react'
 import Record from './Record'
+import type { BinComponentProps } from '../../utils/types'
 
-const Bin = ({ bin, records }) => {
+const Bin = ({ bin, records }: BinComponentProps) => {
   return (
     <div>
       {/* Info about the current Bin and its records */}
       <p>
-        Bin: {bin}<br />
-        Requests are collected at http://www.mylink.com/{bin}<br />
-        Record Total: {records.length} 
+        Bin: {bin.id}<br />
+        Requests are collected at http://www.mylink.com/{bin.id}<br />
+        Record Total: {records.length}
       </p>
 
       {/* Map each record to pass into individual Record component */}
