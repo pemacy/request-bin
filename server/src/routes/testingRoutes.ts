@@ -7,8 +7,9 @@ const testingRoutes = express.Router()
 testingRoutes.get('/', testingController.getBins)
 testingRoutes.get('/hello_world', testingController.helloWorld)
 testingRoutes.get('/bins', testingController.getBins)
-testingRoutes.get('/:bin_id', testingController.getRecords)
-testingRoutes.get('/bins/new/:bin_id', testingController.createBin)
-testingRoutes.get('/:bin_id/records', testingController.createRecord)
+testingRoutes.get('/bins/:bin_id', testingController.getBin)
+testingRoutes.get('/bins/:bin_id/records', testingController.getRecords)
+testingRoutes.post('/bins/:bin_id', testingController.createBin)
+testingRoutes.post('/:bin_id', testingController.createRecord)
 
 export default testingRoutes

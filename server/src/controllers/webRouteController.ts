@@ -52,6 +52,16 @@ export const createBin = async (req: Request, res: Response) => {
   res.status(200).json(bin)
 }
 
+// GET '/bins/:bin_id/'
+export const getbin = async (req: Request, res: Response) => {
+  const bin_id = req.params.bin_id
+  const query = 'SELECT * FROM bin WHERE bin_id = $1'
+  const queryResult = await pgClient.query(query, [bin_id])
+  const bin = queryResult.rows[0]
+
+  res.json(bin)
+}
+
 // GET '/:bin_id/records'
 export const getRecords = async (req: Request, res: Response) => {
   const bin_id = req.params.bin_id

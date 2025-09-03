@@ -1,36 +1,36 @@
-import * as webhookApi from '../services/webhookApi'
+import * as webhookApi from '../../services/webhookApi'
 import { v4 as uuidv4 } from 'uuid'
 import type { FormEvent } from "react"
-import type { BinInterface } from '../types/types'
-
-type FormProps = {
-  setBins?: React.Dispatch<React.SetStateAction<BinInterface[]>>;
-}
+import type { BinInterface, AppView, FormProps } from '../../utils/types'
 
 const handleOnSubmit = async (
   e: FormEvent<HTMLFormElement>,
-  setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>
+  setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>,
+  setView: React.Dispatch<React.SetStateAction<AppView>>,
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface>>
 ) => {
   e.preventDefault()
   const formData = new FormData(e.currentTarget)
   const bin_id = String(formData.get('bin_id'))
   try {
-    await webhookApi.createBin(bin_id)
-    const bins = await webhookApi.getBins()
-    setBins(bins)
+    const newBin = await webhookApi.createBin(bin_id)
+    if (!newBin) throw new Error('Form handleOnSubmit: api returned undefined')
+    setView('modal')
+    setSelectedBin(newBin)
+    setBins((prev) => [...prev, newBin])
   } catch (err) {
     alert('An error occurred with that bin id, try another')
   }
 }
 
-const Form = ({ setBins }: FormProps) => {
+const Form = ({ setBins, setView, setSelectedBin }: FormProps) => {
   if (!setBins) throw new Error('setAllBins property is undefined');
 
   const bin_id = uuidv4().slice(0, 7);
 
   return (
     <form
-      onSubmit={(e) => handleOnSubmit(e, setBins)}
+      onSubmit={(e) => handleOnSubmit(e, setBins, setSelectedBin, setView)}
       className="max-w-md bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-md space-y-4"
     >
       <fieldset className="flex flex-col space-y-1">
