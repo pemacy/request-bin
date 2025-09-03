@@ -1,3 +1,4 @@
+import type { FormEvent } from 'react'
 import type * as appType from '../../utils/types'
 import * as api from '../../services/webhookApi'
 
@@ -21,7 +22,7 @@ const handleOnClick = async (
   }
 }
 
-const Sidebar = ({ bins, setRecords, setView }: appType.SidebarProps) => {
+const Sidebar = ({ bins, setRecords, setView, setSelectedBin }: appType.SidebarProps) => {
   console.log(bins)
   return (
     <nav className="h-full flex flex-col">
@@ -41,7 +42,7 @@ const Sidebar = ({ bins, setRecords, setView }: appType.SidebarProps) => {
             const label = String(id).slice(0, 8);
 
             return (
-              <li key={id} onClick={(e) => handleOnClick(e, setRecords, setView)}>
+              <li key={id} onClick={(e) => handleOnClick(e, setRecords, setView, setSelectedBin)}>
                 <a
                   className="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-white transition"
                   href={`/${encodeURIComponent(id)}/records`}

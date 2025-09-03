@@ -4,11 +4,12 @@ export type Payload = {
 }
 
 export type Record = {
-  id: number
-  method: string
-  bin_id: string
-  created_at: Date
-  mongo_doc_id: string | null
+  id: number;
+  method: string;
+  bin_id: string;
+  created_at: Date;
+  headers: string[];
+  mongo_doc_id: string | null;
 }
 
 export type RecordWithDoc = {
@@ -30,7 +31,7 @@ export type AppView = 'home' | 'modal' | 'bins';
 export type FormProps = {
   setBins?: React.Dispatch<React.SetStateAction<BinInterface[]>>;
   setView?: React.Dispatch<React.SetStateAction<AppView>>;
-  setSelectedBin?: React.Dispatch<React.SetStateAction<BinInterface>>;
+  setSelectedBin?: React.Dispatch<React.SetStateAction<BinInterface>> | undefined;
 }
 
 export type SidebarProps = {
@@ -51,4 +52,8 @@ export type ModalProps = {
 export type BinComponentProps = {
   bin: BinInterface;
   records: RecordWithDoc[];
+}
+
+export type RecordComponentProps = {
+  record: RecordWithDoc;
 }

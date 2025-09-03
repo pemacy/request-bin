@@ -33,6 +33,7 @@ function App() {
             <Form
               setBins={setBins}
               setView={setView}
+              setRecords={setRecords}
               setSelectedBin={setSelectedBin}
             />
           </main>
