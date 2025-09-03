@@ -4,6 +4,7 @@ import request from 'supertest'
 import app from '../app'
 import pgClient from '../db/postgres/pgClient'
 import WebhookPayload from '../models/WebhookPayload'
+import { addMongoDoc } from '../controllers/controllerUtils'
 
 // GET '/'
 // get all bins - first time user (no session_id cookie)
@@ -115,7 +116,7 @@ test.skip('POST /:bin_id - create record', async () => {
 })
 
 // get all records
-test.skip('GET /:bin_id/records', async () => {
+test('GET /:bin_id/records', async () => {
   const agent = request.agent(app)
 
   const session_id = uuidv4()
@@ -134,7 +135,9 @@ test.skip('GET /:bin_id/records', async () => {
   const values = ['POST', bin_id, mongoRecord.id]
   const queryResult = await pgClient.query(query, values)
   const pgRecord = queryResult.rows[0]
+  const recordWithDoc = await addMongoDoc(pgRecord)
   console.log('RETURNED RECORD FROM INSERT OPERTATION:', pgRecord)
+  console.log("RECORD WITH DOC:", recordWithDoc)
 
   const res = await agent.get(`/${bin_id}/records`)
   console.log(res.body)

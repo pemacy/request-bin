@@ -1,3 +1,4 @@
+import type { Bin } from '../utils/types'
 /*
 
 Assuming bins looks like this:
@@ -10,7 +11,7 @@ bins = {
 */
 
 
-const Sidebar = ({ bins }) => {
+const Sidebar = ({ bins }: { bins: Bin[] }) => {
   const list = Object.values(bins);
   return (
     <nav className="sidebar">
@@ -23,7 +24,7 @@ const Sidebar = ({ bins }) => {
           {list.map((bin) => {
             const id = bin.id;
             if (id === null) return null;
-            const label = String(bin.UUIDv4 ?? id).slice(0, 8);
+            const label = String(bin.id).slice(0, 8);
 
             return (
               <li key={id} className="sidebar_item">

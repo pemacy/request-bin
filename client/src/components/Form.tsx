@@ -9,12 +9,12 @@ type Bin = {
 }
 
 type FormProps = {
-  setAllBins?: React.Dispatch<React.SetStateAction<Bin[]>>;
+  setBins?: React.Dispatch<React.SetStateAction<Bin[]>>;
 }
 
 const handleOnSubmit = async (
   e: FormEvent<HTMLFormElement>,
-  setAllBins: React.Dispatch<React.SetStateAction<Bin[]>>
+  setBins: React.Dispatch<React.SetStateAction<Bin[]>>
 ) => {
   e.preventDefault()
   const formData = new FormData(e.currentTarget)
@@ -22,17 +22,17 @@ const handleOnSubmit = async (
   try {
     await webhookApi.createBin(bin_id)
     const bins = await webhookApi.getBins()
-    setAllBins(bins)
+    setBins(bins)
   } catch (err) {
     alert('An error occurred with that bin id, try another')
   }
 }
 
-const Form = ({ setAllBins }: FormProps) => {
-  if (setAllBins === undefined) throw new Error('setAllBins property is undefined')
+const Form = ({ setBins }: FormProps) => {
+  if (setBins === undefined) throw new Error('setAllBins property is undefined')
   const bin_id = uuidv4().slice(0, 7)
   return (
-    <form onSubmit={(e) => handleOnSubmit(e, setAllBins)}>
+    <form onSubmit={(e) => handleOnSubmit(e, setBins)}>
       <input type='text' value={bin_id} name='bin_id' />
       <button type='submit'>Create New Bin</button>
     </form>
