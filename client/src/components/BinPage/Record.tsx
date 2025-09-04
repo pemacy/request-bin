@@ -40,6 +40,7 @@ const Record = ({ record }: RecordComponentProps) => {
             `Show Headers`
           )}
         </span>
+
   {headerVisible && (
     <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
       {
@@ -77,9 +78,9 @@ const Record = ({ record }: RecordComponentProps) => {
 export default Record
 
 
-      // Path: {record.bin_id}<br />
-      // Method: {record.method}<br />
-      // Headers: {record.headers}<br />
+// Path: {record.bin_id}<br />
+// Method: {record.method}<br />
+// Headers: {record.headers}<br />
 
-      // {/* mongo_doc will need to be replaced with retrieved json */}
-      // Body: {record.payload}<br />
+// {/* mongo_doc will need to be replaced with retrieved json */}
+// Body: {record.payload}<br />
