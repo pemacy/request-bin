@@ -25,6 +25,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">
+      <p>{view}</p>
       {(view === 'home' || view === 'modal') && (
         <>
           <main className="flex-[3] w-full p-6 md:p-10">
