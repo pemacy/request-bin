@@ -7,7 +7,7 @@ export type Record = {
   id: number;
   method: string;
   bin_id: string;
-  created_at: Date;
+  created_at: string;
   headers: string[];
   mongo_doc_id: string | null;
 }
@@ -16,13 +16,14 @@ export type RecordWithDoc = {
   id: number;
   method: string;
   bin_id: string;
-  created_at: Date;
+  created_at: string;
+  headers: string[];
   payload: Payload;
 }
 
 export interface BinInterface {
   id: string;
-  created_at: Date;
+  created_at: string;
   session_id: string;
 }
 
@@ -40,13 +41,18 @@ export type SidebarProps = {
   setView: AppView;
 }
 
-export type BinHeaderProps = {
+export type ModalProps = {
+  bin: BinInterface
+}
+
+export type BinPageProps = {
   bin: BinInterface;
   records: RecordWithDoc[];
 }
 
-export type ModalProps = {
-  bin: BinInterface
+export type BinPageHeaderProps = {
+  bin: BinInterface;
+  records: RecordWithDoc[];
 }
 
 export type BinComponentProps = {
