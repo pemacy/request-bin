@@ -56,8 +56,7 @@ const Record = ({ record }: RecordComponentProps) => {
       {/* Body / Payload */}
       <div
         onClick={handleBodyClick}
-        className="mt-3 cursor-pointer rounded-lg bg-gray-50 px-3 py-2 shadow-sm hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600"
-      >
+        className="mt-3 cursor-pointer rounded-lg bg-gray-50 px-3 py-2 shadow-sm hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600">
         <span className="block text-sm font-medium text-gray-600 dark:text-gray-300">
           {bodyVisible === true ? (
             `Hide Body`
@@ -67,7 +66,12 @@ const Record = ({ record }: RecordComponentProps) => {
         </span>
         {bodyVisible && (
           <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
-            {Object.entries(record.payload.body).join('\n')}
+            {
+              JSON.stringify(record.payload, null, 2)
+                .split('\n')
+                .slice(1, -1)
+                .join('\n')
+            }
           </pre>
         )}
       </div>

@@ -53,7 +53,11 @@ function App() {
 
       {/* Modal */}
       {view === 'modal' && selectedBin && (
-        <Modal bin={selectedBin} setView={setView} setSelectedBin={setSelectedBin} />
+        <Modal 
+          bin={selectedBin}
+          setView={setView}
+          setSelectedBin={setSelectedBin}
+          setRecords={setRecords} />
       )}
 
       {/* Bin records view */}

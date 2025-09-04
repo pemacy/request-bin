@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react'
 import type * as appType from '../../utils/types'
 import { getBin } from '../../services/webhookApi'
+// import { setSourceMapsSupport } from 'module'
 
 const goToMainPage = (
   e: MouseEvent<HTMLDivElement>,
@@ -13,7 +14,8 @@ const goToMainPage = (
 const goToBinPage = async (
   e: MouseEvent<HTMLButtonElement>,
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
-  setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>
+  setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>,
+  setRecords: React.Dispatch<React.SetStateAction<[]>>
 ) => {
   e.stopPropagation()
   const bin_id = e.currentTarget.dataset.binId
@@ -21,9 +23,10 @@ const goToBinPage = async (
   const bin = await getBin(bin_id)
   setView('bins')
   setSelectedBin(bin)
+  setRecords([]);
 }
 
-const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
+const Modal = ({ bin, setView, setSelectedBin, setRecords }: appType.ModalProps) => {
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -52,7 +55,7 @@ const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
           <button
             className="px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white text-sm hover:bg-blue-700"
             data-bin-id={bin.id}
-            onClick={(e) => goToBinPage(e, setView, setSelectedBin)}
+            onClick={(e) => goToBinPage(e, setView, setSelectedBin, setRecords)}
           >
             Open Basket
           </button>
