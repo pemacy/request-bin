@@ -6,6 +6,7 @@ const Record = ({ record }: RecordComponentProps) => {
   const [bodyVisible, setBodyVisible] = useState<boolean>(false);
 
   const handleHeaderClick = () => {
+    console.log(record.headers)
     setHeaderVisible(!headerVisible);
   }
 
@@ -39,10 +40,16 @@ const Record = ({ record }: RecordComponentProps) => {
             `Show Headers`
           )}
         </span>
-        {headerVisible && (
-          <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
-            {Object.entries(record.headers).join('\n')}
-          </pre>
+
+  {headerVisible && (
+    <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
+      {
+        JSON.stringify(record.headers, null, 2)
+          .split('\n')
+          .slice(1, -1)
+          .join('\n')
+      }
+    </pre>
         )}
       </div>
 
@@ -60,7 +67,7 @@ const Record = ({ record }: RecordComponentProps) => {
         </span>
         {bodyVisible && (
           <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
-            {JSON.stringify(record.payload, null, 2)}
+            {Object.entries(record.payload.body).join('\n')}
           </pre>
         )}
       </div>

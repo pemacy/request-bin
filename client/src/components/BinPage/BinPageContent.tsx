@@ -2,7 +2,8 @@
 import type { BinComponentProps } from '../../utils/types'
 import Bin from './Bin'
 
-const BinPageContent = ({ selectedBin, records }: BinComponentProps) => {
+
+const BinPageContent = ({ selectedBin, records } : BinComponentProps) => {
   return (
     <div>
       <br />
@@ -11,12 +12,11 @@ const BinPageContent = ({ selectedBin, records }: BinComponentProps) => {
 
       {/* Pass array of records into Bin component if length > 0 */}
       {records.length > 0 ? (
-        <Bin selectedBin={selectedBin} records={records} />
+        <Bin selectedBin={selectedBin} records={records}/>
       ) : (
 
-
-        // If `records` array is empty, display empty bin message
-        <p>Empty Bin Use http://www.mylink.com/{selectedBin.id}</p>
+      // If `records` array is empty, display empty bin message
+        <p>Empty Bin Use http://www.mylink.com/{selectedBin.id}</p>    
       )}
     </div>
   )
