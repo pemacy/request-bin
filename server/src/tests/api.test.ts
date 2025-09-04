@@ -83,7 +83,17 @@ test.skip('POST /:bin_id - create record', async () => {
   await pgClient.query(createBinQuery, createBinValues)
 
   const payload = { a: 1 }
-  await agent.post(`/${bin_id}`).send(payload).set('Content-Type', 'application/json')
+  const headers = {
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.44.1",
+    accept: "*/*",
+    "postman-token": "5272e5d9-00a4-4a7e-bcd2-dc100c47cf74",
+    host: "localhost:3000",
+    "accept-encoding": "gzip, deflate, br",
+    connection: "keep-alive",
+    "content-length": "54",
+  };
+  await agent.post(`/${bin_id}`).send({ payload, headers }).set('Content-Type', 'application/json')
 
   const allBinsQuery = await pgClient.query('SELECT * FROM bins')
   const allBins = allBinsQuery.rows

@@ -6,8 +6,8 @@ import type { BinInterface, AppView, FormProps } from '../../utils/types'
 const handleOnSubmit = async (
   e: FormEvent<HTMLFormElement>,
   setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>,
-  setView: React.Dispatch<React.SetStateAction<AppView>>,
-  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface>>
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>,
+  setView: React.Dispatch<React.SetStateAction<AppView>>
 ) => {
   e.preventDefault()
   const formData = new FormData(e.currentTarget)

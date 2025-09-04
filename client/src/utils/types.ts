@@ -30,15 +30,17 @@ export interface BinInterface {
 export type AppView = 'home' | 'modal' | 'bins';
 
 export type FormProps = {
-  setBins?: React.Dispatch<React.SetStateAction<BinInterface[]>>;
-  setView?: React.Dispatch<React.SetStateAction<AppView>>;
-  setSelectedBin?: React.Dispatch<React.SetStateAction<BinInterface>> | undefined;
+  setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>;
+  setRecords: React.Dispatch<React.SetStateAction<RecordWithDoc[]>>;
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
 }
 
 export type SidebarProps = {
   bins: BinInterface[];
-  setRecords?: React.Dispatch<React.SetStateAction<RecordWithDoc[]>>;
-  setView: AppView;
+  setRecords: React.Dispatch<React.SetStateAction<RecordWithDoc[]>>;
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
 }
 
 export type ModalProps = {
