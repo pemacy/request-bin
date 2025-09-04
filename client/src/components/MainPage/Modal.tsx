@@ -1,14 +1,37 @@
-import type { ModalProps } from '../../utils/types'
+import type { MouseEvent } from 'react'
+import type * as appType from '../../utils/types'
+import { getBin } from '../../services/webhookApi'
 
-const Modal = ({ bin }: ModalProps) => {
+const goToMainPage = (
+  e: MouseEvent<HTMLDivElement>,
+  setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
+) => {
+  e.stopPropagation()
+  setView('home')
+}
+
+const goToBinPage = async (
+  e: MouseEvent<HTMLDivElement>,
+  setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
+  setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>
+) => {
+  e.stopPropagation()
+  const bin_id = e.currentTarget.dataset.binId
+  if (!bin_id) throw new Error('goToBinPage: data-bin-id undefined on Open Basket button')
+  const bin = await getBin(bin_id)
+  setView('bins')
+  setSelectedBin(bin)
+}
+
+const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-      onClick={() => { /* allow clicking outside modal to close if needed */ }}
+      onClick={(e) => goToMainPage(e, setView)}
     >
       <div
         className="bg-white p-8 rounded-lg max-w-lg w-[90%] shadow-lg font-sans leading-relaxed text-gray-800"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => goToMainPage(e, setView)}
       >
         <h1 className="mb-4 text-lg font-semibold border-b border-gray-200 pb-2">
           Created
@@ -28,7 +51,8 @@ const Modal = ({ bin }: ModalProps) => {
           </button>
           <button
             className="px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white text-sm hover:bg-blue-700"
-            onClick={() => window.open(bin.id, "_blank")}
+            data-bin-id={bin.id}
+            onClick={(e) => goToBinPage(e, setView, setSelectedBin)}
           >
             Open Basket
           </button>

@@ -44,7 +44,9 @@ export type SidebarProps = {
 }
 
 export type ModalProps = {
-  bin: BinInterface
+  bin: BinInterface;
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
 }
 
 export type BinPageProps = {
