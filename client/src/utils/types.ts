@@ -17,7 +17,7 @@ export type RecordWithDoc = {
   method: string;
   bin_id: string;
   created_at: string;
-  headers: string[];
+  headers: string;
   payload: Payload;
 }
 
@@ -50,13 +50,18 @@ export type ModalProps = {
 }
 
 export type BinPageProps = {
-  bin: BinInterface;
+  selectedBin: BinInterface;
+  records: RecordWithDoc[];
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
+}
+
+export type BinProps = {
+  selectedBin: BinInterface;
   records: RecordWithDoc[];
 }
 
 export type BinPageHeaderProps = {
-  bin: BinInterface;
-  records: RecordWithDoc[];
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
 }
 
 export type BinComponentProps = {

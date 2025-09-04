@@ -13,6 +13,9 @@
     "db:reset:test": "bash ./src/db/postgres/db_reset_test.sh",
     "db:reset:development": "bash ./src/db/postgres/db_reset_development.sh",
     "db:reset:production": "bash ./src/db/postgres/db_reset_production.sh",
+    "db:reset:test:windows": "bash ./src/db/postgres/db_reset_test_windows.sh",
+    "db:reset:development:windows": "bash ./src/db/postgres/db_reset_development_windows.sh",
+    "db:reset:production:windows": "bash ./src/db/postgres/db_reset_production_windows.sh",
     "db:reset:all": "npm run db:reset:test && npm run db:reset:development",
     "db:seed": "dotenv -e .env.development -- node src/db/seed.js"
   },

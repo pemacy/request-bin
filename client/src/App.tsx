@@ -58,10 +58,10 @@ function App() {
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-        <BinPage selectedBin={selectedBin} records={records} />
+        <BinPage selectedBin={selectedBin} records={records} setView={setView}/>
       }
 
-      {/* <BinPage bin={selectedBin} records={records}/> */}
+      {/* <BinPage selectedBin={selectedBin} records={records}/> */}
     </div>
   );
 }
