@@ -15,7 +15,7 @@ const goToBinPage = async (
   e: MouseEvent<HTMLButtonElement>,
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
   setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>,
-  setRecords: React.Dispatch<React.SetStateAction<[]>>
+  setRecords: React.Dispatch<React.SetStateAction<appType.RecordWithDoc[]>>
 ) => {
   e.stopPropagation()
   const bin_id = e.currentTarget.dataset.binId

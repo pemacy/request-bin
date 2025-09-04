@@ -51,9 +51,12 @@ export type ModalProps = {
 }
 
 export type BinPageProps = {
+  setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>;
   selectedBin: BinInterface;
   records: RecordWithDoc[];
   setView: React.Dispatch<React.SetStateAction<AppView>>;
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
+  setRecords: React.Dispatch<React.SetStateAction<RecordWithDoc[]>>;
 }
 
 export type BinProps = {
@@ -62,7 +65,11 @@ export type BinProps = {
 }
 
 export type BinPageHeaderProps = {
+  setBins: React.Dispatch<React.SetStateAction<BinInterface[]>>;
+  selectedBin: BinInterface;
   setView: React.Dispatch<React.SetStateAction<AppView>>;
+  setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
+  setRecords: React.Dispatch<React.SetStateAction<RecordWithDoc[]>>;
 }
 
 export type BinComponentProps = {

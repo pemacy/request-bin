@@ -11,7 +11,7 @@ function App() {
   const [view, setView] = useState<AppView>('home'); // controls which components are visible
   const [bins, setBins] = useState<BinInterface[]>([]);
   const [selectedBin, setSelectedBin] = useState<BinInterface | undefined>();
-  const [records, setRecords] = useState<RecordWithDoc[]>([]);
+  const [records, setRecords] = useState<RecordWithDoc[] | []>([]);
 
   useEffect(() => {
     const fetchBins = async () => {
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">
-      <p>{view}</p>
+
       {(view === 'home' || view === 'modal') && (
         <>
           <main className="flex-[3] w-full p-6 md:p-10">
@@ -73,7 +73,11 @@ function App() {
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-        <BinPage selectedBin={selectedBin} records={records} setView={setView} />
+      <div className="flex-1 flex justify-center">
+  <div className="w-full max-w-5xl bg-gray dark:bg-gray-900 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5">
+        <BinPage setBins={setBins} selectedBin={selectedBin} records={records} setView={setView} setSelectedBin={setSelectedBin} setRecords={setRecords} />
+        </div>
+        </div>
       }
 
       {/* <BinPage selectedBin={selectedBin} records={records}/> */}
