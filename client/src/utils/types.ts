@@ -56,7 +56,7 @@ export type BinPageHeaderProps = {
 }
 
 export type BinComponentProps = {
-  bin: BinInterface;
+  selectedBin: BinInterface;
   records: RecordWithDoc[];
 }
 
