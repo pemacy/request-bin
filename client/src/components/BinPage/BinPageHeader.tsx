@@ -1,10 +1,10 @@
-import type { BinComponentProps } from "../../utils/types"
+import type { BinPageHeaderProps } from "../../utils/types"
 
-const BinPageHeader = ({ setView } : BinComponentProps) => {
+const BinPageHeader = ({ setView } : BinPageHeaderProps) => {
   return (
        <div className="grid grid-cols-6 rounded-xl bg-white p-4 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
         <span className="col-start-1">
-          <a href="#" onClick={() => setView('home')}>Home</a>
+          <a onClick={() => setView('home')}>Home</a>
         </span>
         
         <span className="col-start-4">
