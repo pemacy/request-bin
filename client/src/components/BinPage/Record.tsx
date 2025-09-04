@@ -41,7 +41,7 @@ const Record = ({ record }: RecordComponentProps) => {
         </span>
         {headerVisible && (
           <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
-            {record.headers.join("\n")}
+            {Object.entries(record.headers).join('\n')}
           </pre>
         )}
       </div>
@@ -71,9 +71,9 @@ const Record = ({ record }: RecordComponentProps) => {
 export default Record
 
 
-      // Path: {record.bin_id}<br />
-      // Method: {record.method}<br />
-      // Headers: {record.headers}<br />
+// Path: {record.bin_id}<br />
+// Method: {record.method}<br />
+// Headers: {record.headers}<br />
 
-      // {/* mongo_doc will need to be replaced with retrieved json */}
-      // Body: {record.payload}<br />
+// {/* mongo_doc will need to be replaced with retrieved json */}
+// Body: {record.payload}<br />
