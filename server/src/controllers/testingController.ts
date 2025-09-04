@@ -1,16 +1,13 @@
 import { Request, Response } from 'express'
 import * as api from './webRouteController'
 import pgClient from '../db/postgres/pgClient'
+import * as utils from './controllerUtils'
 
 // GET '/'
 // GET '/bins'
 export const getBins = async (req: Request, res: Response) => {
   req.cookies.session_id = 'test'
-  console.log("GET BINS TESTING")
-  const query = 'SELECT * FROM bins WHERE session_id = $1'
-  const values = ['test']
-  const bins = await pgClient.query(query, values)
-  res.json(bins.rows)
+  await api.getBins(req, res)
 }
 
 // GET '/bins/:bin_id/records'
@@ -22,12 +19,7 @@ export const getRecords = async (req: Request, res: Response) => {
 // GET '/bins/:bin_id/'
 export const getBin = async (req: Request, res: Response) => {
   req.cookies.session_id = 'test'
-  const bin_id = req.params.bin_id
-  const query = 'SELECT * FROM bins WHERE id = $1'
-  const queryResult = await pgClient.query(query, [bin_id])
-  const bin = queryResult.rows[0]
-
-  res.json(bin)
+  api.getBin(req, res)
 }
 
 // POST /bins/:bin_id
