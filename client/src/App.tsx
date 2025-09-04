@@ -10,7 +10,7 @@ import type { RecordWithDoc, BinInterface, AppView } from './utils/types'
 function App() {
   const [view, setView] = useState<AppView>('home'); // controls which components are visible
   const [bins, setBins] = useState<BinInterface[]>([]);
-  const [selectedBin, setSelectedBin] = useState<BinInterface>();
+  const [selectedBin, setSelectedBin] = useState<BinInterface | undefined>();
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
 
 
@@ -43,7 +43,9 @@ function App() {
             <Sidebar
               bins={bins}
               setRecords={setRecords}
-              setView={setView} />
+              setView={setView}
+              setSelectedBin={setSelectedBin}
+            />
           </aside>
 
         </>
