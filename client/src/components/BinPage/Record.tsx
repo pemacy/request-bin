@@ -23,7 +23,7 @@ const Record = ({ record }: RecordComponentProps) => {
       {/* Path */}
       <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2 shadow-sm dark:bg-slate-700">
         <span className="block text-lg font-medium text-gray-600 dark:text-gray-300">
-          Path - /{record.bin_id}
+          /{record.bin_id}
         </span>
         {/* <p className="text-sm text-gray-800 dark:text-gray-100">{record.bin_id}</p> */}
       </div>
