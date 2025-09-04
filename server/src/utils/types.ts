@@ -4,8 +4,13 @@ export type BinInterface = {
   created_at: Date
 }
 
-export type Payload = {
+export type WebhookDoc = {
   id: string;
+  payload: MongoDoc;
+  headers: MongoDoc;
+}
+
+export type MongoDoc = {
   [key: string]: any;
 }
 
@@ -22,6 +27,8 @@ export type RecordWithDoc = {
   method: string;
   bin_id: string;
   created_at: Date;
-  payload: Payload;
+  payload: MongoDoc;
+  mongo_doc_id: string;
+  headers: MongoDoc;
 }
 
