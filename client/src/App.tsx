@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import BinHeader from './components/BinPage/BinHeader'
 import Form from './components/MainPage/Form'
 import Sidebar from './components/MainPage/Sidebar'
 import Modal from './components/MainPage/Modal'
-import * as webhookApi from './services/webhookApi'
+import BinPage from './components/BinPage/BinPage'
 import type { RecordWithDoc, BinInterface, AppView } from './utils/types'
+import * as webhookApi from './services/webhookApi'
 
 function App() {
   const [view, setView] = useState<AppView>('home'); // controls which components are visible
@@ -24,7 +24,7 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col md:flex-row">
+    <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">
       {(view === 'home' || view === 'modal') && (
         <>
           <main className="flex-[3] w-full p-6 md:p-10">
@@ -55,9 +55,10 @@ function App() {
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-        <BinHeader bin={selectedBin} records={records} />
+        <BinPage bin={selectedBin} records={records} />
       }
 
+      {/* <BinPage bin={selectedBin} records={records}/> */}
     </div>
   );
 }
