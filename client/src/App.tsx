@@ -29,7 +29,7 @@ function App() {
       const record: RecordWithDoc = JSON.parse(event.data);
 
       if (selectedBin && record.bin_id === selectedBin.id) {
-        setRecords((prev) => [...prev, record]);
+        setRecords([...records, record]);
       }
     };
   }, [selectedBin])
