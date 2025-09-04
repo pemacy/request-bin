@@ -11,7 +11,7 @@ const goToMainPage = (
 }
 
 const goToBinPage = async (
-  e: MouseEvent<HTMLDivElement>,
+  e: MouseEvent<HTMLButtonElement>,
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
   setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>
 ) => {
@@ -23,7 +23,7 @@ const goToBinPage = async (
   setSelectedBin(bin)
 }
 
-const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
+const Modal = ({ selectedBin, setView, setSelectedBin }: appType.ModalProps) => {
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -37,10 +37,10 @@ const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
           Created
         </h1>
         <div>
-          Basket '{bin.id}' has been successfully created!
+          Basket '{selectedBin.id}' has been successfully created!
         </div>
         <div className="mt-2 p-2 bg-gray-100 rounded font-mono text-sm break-words">
-          Your token is: {bin.id}
+          Your token is: {selectedBin.id}
         </div>
 
         <div className="flex justify-end gap-3 mt-6">
@@ -51,7 +51,7 @@ const Modal = ({ bin, setView, setSelectedBin }: appType.ModalProps) => {
           </button>
           <button
             className="px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white text-sm hover:bg-blue-700"
-            data-bin-id={bin.id}
+            data-bin-id={selectedBin.id}
             onClick={(e) => goToBinPage(e, setView, setSelectedBin)}
           >
             Open Basket

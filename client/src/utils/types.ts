@@ -44,24 +44,25 @@ export type SidebarProps = {
 }
 
 export type ModalProps = {
-  bin: BinInterface;
+  selectedBin: BinInterface;
   setView: React.Dispatch<React.SetStateAction<AppView>>;
   setSelectedBin: React.Dispatch<React.SetStateAction<BinInterface | undefined>>;
 }
 
 export type BinPageProps = {
-  bin: BinInterface;
+  selectedBin: BinInterface;
   records: RecordWithDoc[];
 }
 
 export type BinPageHeaderProps = {
-  bin: BinInterface;
+  selectedBin: BinInterface;
   records: RecordWithDoc[];
 }
 
 export type BinComponentProps = {
   selectedBin: BinInterface;
   records: RecordWithDoc[];
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
 }
 
 export type RecordComponentProps = {
