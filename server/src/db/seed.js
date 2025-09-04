@@ -8,6 +8,7 @@ const pgClient = new Client();
 const webhookPayloadSchema = new mongoose.Schema({
   id: String,
   payload: {},
+  headers: {},
 });
 
 webhookPayloadSchema.set("toJSON", {
@@ -59,8 +60,18 @@ async function seed() {
   for (const bin of bins) {
     for (let i = 1; i <= 3; i++) {
       let payload = { content: "Record" + i };
+      let headers = {
+        "content-type": "application/json",
+        "user-agent": "PostmanRuntime/7.44.1",
+        accept: "*/*",
+        "postman-token": "5272e5d9-00a4-4a7e-bcd2-dc100c47cf74",
+        host: "localhost:3000",
+        "accept-encoding": "gzip, deflate, br",
+        connection: "keep-alive",
+        "content-length": "54",
+      };
 
-      const newPayload = new WebhookPayload({ payload });
+      const newPayload = new WebhookPayload({ payload, headers });
       const savedPayload = await newPayload.save();
       const mongoId = savedPayload._id.toString();
 

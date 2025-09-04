@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 const webhookPayloadSchema = new mongoose.Schema({
   id: String,
   payload: {},
+  headers: {}
 })
 
 webhookPayloadSchema.set('toJSON', {

@@ -58,7 +58,9 @@ export const createRecord = async (req: Request, res: Response) => {
   const payload = req.body
   const bin_id = req.params.bin_id
   const method = req.method
-  const newPayload = new WebhookPayload({ payload })
+  const headers = req.headers
+  console.log('HEADERS', headers)
+  const newPayload = new WebhookPayload({ payload, headers })
   const savedPayload = await newPayload.save()
   const mongoDocId = savedPayload._id.toString()
 
