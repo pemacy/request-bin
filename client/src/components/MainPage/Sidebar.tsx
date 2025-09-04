@@ -1,12 +1,12 @@
-import type { FormEvent } from 'react'
+import type { MouseEvent } from 'react'
 import type * as appType from '../../utils/types'
 import * as api from '../../services/webhookApi'
 
 const handleOnClick = async (
-  e: FormEvent<HTMLFormElement>,
+  e: MouseEvent<HTMLLIElement>,
   setRecords: React.Dispatch<React.SetStateAction<appType.RecordWithDoc[]>>,
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
-  setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface>>
+  setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>
 ) => {
   e.preventDefault()
   const bin_id = e.currentTarget.dataset.binId
