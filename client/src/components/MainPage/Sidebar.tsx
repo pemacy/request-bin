@@ -8,7 +8,10 @@ const handleOnClick = async (
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
   setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface>>
 ) => {
-  const bin_id = e.currentTarget.id
+  e.preventDefault()
+  const bin_id = e.currentTarget.dataset.binId
+  if (!bin_id) throw new Error('handleOnClick - list item does not have data-bin-id attribute')
+  console.log('BIN ID', bin_id)
   try {
     const records = await api.getRecords(bin_id)
     const bin = await api.getBin(bin_id)
@@ -17,6 +20,7 @@ const handleOnClick = async (
     setSelectedBin(bin)
     setRecords(records)
     setView('bins')
+    console.log('BINS VIEW SET')
   } catch (err) {
     console.log('There was an error', err)
   }
@@ -37,18 +41,18 @@ const Sidebar = ({ bins, setRecords, setView, setSelectedBin }: appType.SidebarP
       ) : (
         <ul className="flex-1 overflow-y-auto p-4 space-y-2">
           {bins.map((bin) => {
-            const id = bin.id;
-            if (id === null) return null;
-            const label = String(id).slice(0, 8);
+            if (bin.id === null) return null;
 
             return (
-              <li key={id} onClick={(e) => handleOnClick(e, setRecords, setView, setSelectedBin)}>
+              <li key={bin.id}
+                onClick={(e) => handleOnClick(e, setRecords, setView, setSelectedBin)}
+                data-bin-id={bin.id}
+              >
                 <a
                   className="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-white transition"
-                  href={`/${encodeURIComponent(id)}/records`}
-                  title={label}
+                  href={`/${encodeURIComponent(bin.id)}`}
                 >
-                  {label}
+                  {bin.id}
                 </a>
               </li>
             );

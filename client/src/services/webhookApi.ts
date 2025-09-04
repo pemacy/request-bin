@@ -13,11 +13,13 @@ export const getBins = async () => {
 }
 
 export const getBin = async (bin_id: string) => {
+  console.log(binUrl(bin_id))
   const res = await axios.get(binUrl(bin_id))
   return res.data
 }
 
 export const getRecords = async (bin_id: string) => {
+  console.log(recordsUrl(bin_id))
   const res = await axios.get(recordsUrl(bin_id))
   return res.data
 }

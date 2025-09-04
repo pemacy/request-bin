@@ -48,8 +48,14 @@ export const addMongoDoc = async (record: Record): Promise<RecordWithDoc> => {
   const { id, method, bin_id, created_at } = record
 
   const doc = await WebhookPayload.findOne({ _id: record.mongo_doc_id })
-  if (doc === null) throw new Error('addMongoDoc - doc is null')
-
+  if (doc === null) {
+    const errMsg = "addMongoDoc - doc is null.\n" +
+      "Record id: " + record.id + "\n" +
+      "Record method: " + record.method + "\n" +
+      "Record bin: " + record.bin_id + "\n" +
+      "Record mongo_doc_id: " + record.mongo_doc_id + "\n"
+    throw new Error(errMsg)
+  }
   const docJson = doc.toJSON() as Payload
   return { id, method, bin_id, created_at, payload: docJson }
 }
