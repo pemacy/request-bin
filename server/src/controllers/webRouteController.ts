@@ -66,10 +66,13 @@ export const createRecord = async (req: Request, res: Response) => {
   console.log(query, '- VALUES:', values)
   const record = queryResult.rows[0]
 
+  const recordWithDoc = await utils.addMongoDoc(record)
+  console.log(Object.keys(recordWithDoc))
+
   wss.clients.forEach((client) => {
     console.log("INSIDE WEB SOCKET")
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(record))
+      client.send(JSON.stringify(recordWithDoc))
     }
   })
   res.status(200).json(record)

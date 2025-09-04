@@ -58,7 +58,7 @@ async function seed() {
 
   // --- Insert records and Mongo payloads ---
   for (const bin of bins) {
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 1; i++) {
       let payload = { content: "Record" + i };
       let headers = {
         "content-type": "application/json",
