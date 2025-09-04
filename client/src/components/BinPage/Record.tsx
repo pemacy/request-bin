@@ -4,6 +4,8 @@ import type { RecordComponentProps } from '../../utils/types';
 const Record = ({ record }: RecordComponentProps) => {
   const [headerVisible, setHeaderVisible] = useState<boolean>(false);
   const [bodyVisible, setBodyVisible] = useState<boolean>(false);
+  console.log(record)
+  console.log(Object.keys(record))
 
   const handleHeaderClick = () => {
     console.log(record.headers)
@@ -41,15 +43,15 @@ const Record = ({ record }: RecordComponentProps) => {
           )}
         </span>
 
-  {headerVisible && (
-    <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
-      {
-        JSON.stringify(record.headers, null, 2)
-          .split('\n')
-          .slice(1, -1)
-          .join('\n')
-      }
-    </pre>
+        {headerVisible && (
+          <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-100">
+            {
+              JSON.stringify(record.headers, null, 2)
+                .split('\n')
+                .slice(1, -1)
+                .join('\n')
+            }
+          </pre>
         )}
       </div>
 

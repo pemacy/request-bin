@@ -13,7 +13,6 @@ function App() {
   const [selectedBin, setSelectedBin] = useState<BinInterface | undefined>();
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
 
-
   useEffect(() => {
     const fetchBins = async () => {
       const bins = await webhookApi.getBins()
@@ -22,6 +21,18 @@ function App() {
 
     fetchBins()
   }, [])
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:3000");
+
+    ws.onmessage = (event) => {
+      const record: RecordWithDoc = JSON.parse(event.data);
+
+      if (selectedBin && record.bin_id === selectedBin.id) {
+        setRecords((prev) => [...prev, record]);
+      }
+    };
+  }, [selectedBin])
 
   return (
     <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">
@@ -53,7 +64,7 @@ function App() {
 
       {/* Modal */}
       {view === 'modal' && selectedBin && (
-        <Modal 
+        <Modal
           bin={selectedBin}
           setView={setView}
           setSelectedBin={setSelectedBin}
@@ -62,7 +73,7 @@ function App() {
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-        <BinPage selectedBin={selectedBin} records={records} setView={setView}/>
+        <BinPage selectedBin={selectedBin} records={records} setView={setView} />
       }
 
       {/* <BinPage selectedBin={selectedBin} records={records}/> */}

@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import WebhookPayload from '../models/WebhookPayload'
 import pgClient from '../db/postgres/pgClient'
 import * as utils from './controllerUtils'
+import { wss } from '../server'
 
 // GET '/'
 export const getBins = async (req: Request, res: Response) => {
@@ -52,6 +53,7 @@ export const createRecord = async (req: Request, res: Response) => {
   const bin_id = req.params.bin_id
   const method = req.method
   const headers = req.headers
+
   console.log('HEADERS', headers)
   const newPayload = new WebhookPayload({ payload, headers })
   const savedPayload = await newPayload.save()
@@ -60,8 +62,19 @@ export const createRecord = async (req: Request, res: Response) => {
   const query = 'INSERT INTO records (method, bin_id, mongo_doc_id) VALUES ($1, $2, $3) RETURNING *'
   const values = [method, bin_id, mongoDocId]
   const queryResult = await pgClient.query(query, values)
+
   console.log(query, '- VALUES:', values)
   const record = queryResult.rows[0]
+
+  const recordWithDoc = await utils.addMongoDoc(record)
+  console.log(Object.keys(recordWithDoc))
+
+  wss.clients.forEach((client) => {
+    console.log("INSIDE WEB SOCKET")
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(recordWithDoc))
+    }
+  })
   res.status(200).json(record)
 }
 
