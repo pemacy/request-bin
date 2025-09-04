@@ -53,12 +53,12 @@ function App() {
 
       {/* Modal */}
       {view === 'modal' && selectedBin && (
-        <Modal bin={selectedBin} setView={setView} setCurrentBin={setSelectedBin} />
+        <Modal bin={selectedBin} setView={setView} setSelectedBin={setSelectedBin} />
       )}
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-        <BinPage bin={selectedBin} records={records} />
+        <BinPage selectedBin={selectedBin} records={records} />
       }
 
       {/* <BinPage bin={selectedBin} records={records}/> */}

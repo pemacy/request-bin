@@ -11,7 +11,7 @@ const goToMainPage = (
 }
 
 const goToBinPage = async (
-  e: MouseEvent<HTMLDivElement>,
+  e: MouseEvent<HTMLButtonElement>,
   setView: React.Dispatch<React.SetStateAction<appType.AppView>>,
   setSelectedBin: React.Dispatch<React.SetStateAction<appType.BinInterface | undefined>>
 ) => {
