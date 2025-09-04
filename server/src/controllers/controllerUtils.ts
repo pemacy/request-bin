@@ -1,6 +1,19 @@
+import type { Response } from 'express'
 import WebhookPayload from '../models/WebhookPayload'
 import pgClient from '../db/postgres/pgClient'
 import { WebhookDoc, RecordWithDoc, BinInterface, Record } from '../utils/types'
+import { v4 as uuidv4 } from 'uuid'
+
+const MS_IN_HOUR = 60 * 60 * 1000
+const MS_IN_DAY = MS_IN_HOUR * 24
+const MS_IN_WEEK = MS_IN_DAY * 7
+const MS_IN_MONTH = MS_IN_DAY * 30
+
+export const setSessionId = (res: Response) => {
+  const session_id = uuidv4()
+  res.set('Set-Cookie', `session_id=${session_id} max-age=${MS_IN_MONTH} httpOnly=true`)
+  return session_id
+}
 
 export const getBinRecords = async (bin: BinInterface) => {
   const query = 'SELECT * FROM records WHERE bin_id = $1'
