@@ -11,7 +11,6 @@ const handleOnClick = async (
   e.preventDefault()
   const bin_id = e.currentTarget.dataset.binId
   if (!bin_id) throw new Error('handleOnClick - list item does not have data-bin-id attribute')
-  console.log('BIN ID', bin_id)
   try {
     const records = await api.getRecords(bin_id)
     const bin = await api.getBin(bin_id)
@@ -21,6 +20,7 @@ const handleOnClick = async (
     setRecords(records)
     setView('bins')
     console.log('BINS VIEW SET')
+    console.log('BIN === ', bin)
   } catch (err) {
     console.log('There was an error', err)
   }
