@@ -19,15 +19,12 @@ const handleOnClick = async (
     setSelectedBin(bin)
     setRecords(records)
     setView('bins')
-    console.log('BINS VIEW SET')
-    console.log('BIN === ', bin)
   } catch (err) {
     console.log('There was an error', err)
   }
 }
 
 const Sidebar = ({ bins, setRecords, setView, setSelectedBin }: appType.SidebarProps) => {
-  console.log(bins)
   return (
     <nav className="h-full flex flex-col">
       <div className="px-4 py-3 text-lg font-semibold border-b border-gray-700">

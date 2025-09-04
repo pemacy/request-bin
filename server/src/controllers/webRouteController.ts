@@ -1,27 +1,21 @@
 import { Request, Response } from 'express'
 import WebhookPayload from '../models/WebhookPayload'
 import pgClient from '../db/postgres/pgClient'
-import { v4 as uuidv4 } from 'uuid'
 import * as utils from './controllerUtils'
-
-const MS_IN_HOUR = 60 * 60 * 1000
-const MS_IN_DAY = MS_IN_HOUR * 24
-const MS_IN_WEEK = MS_IN_DAY * 7
-const MS_IN_MONTH = MS_IN_DAY * 30
+import { wss } from '../server'
 
 // GET '/'
 export const getBins = async (req: Request, res: Response) => {
   if (req.cookies.session_id) {
     console.log('SESSION ID:', req.cookies.session_id)
-    const sessionId = req.cookies.session_id
+    const session_id = req.cookies.session_id
     const query = 'SELECT * FROM bins WHERE session_id = $1'
-    const values = [sessionId]
+    const values = [session_id]
     const bins = await pgClient.query(query, values)
     console.log(query, '- VALUES:', values)
     res.json(bins.rows)
   } else {
-    const sessionId = uuidv4()
-    res.set('Set-Cookie', `session_id=${sessionId} max-age=${MS_IN_MONTH} httpOnly=true`)
+    utils.setSessionId(res)
     res.json([])
   }
 }
@@ -59,6 +53,7 @@ export const createRecord = async (req: Request, res: Response) => {
   const bin_id = req.params.bin_id
   const method = req.method
   const headers = req.headers
+
   console.log('HEADERS', headers)
   const newPayload = new WebhookPayload({ payload, headers })
   const savedPayload = await newPayload.save()
@@ -67,8 +62,19 @@ export const createRecord = async (req: Request, res: Response) => {
   const query = 'INSERT INTO records (method, bin_id, mongo_doc_id) VALUES ($1, $2, $3) RETURNING *'
   const values = [method, bin_id, mongoDocId]
   const queryResult = await pgClient.query(query, values)
+
   console.log(query, '- VALUES:', values)
   const record = queryResult.rows[0]
+
+  const recordWithDoc = await utils.addMongoDoc(record)
+  console.log(Object.keys(recordWithDoc))
+
+  wss.clients.forEach((client) => {
+    console.log("INSIDE WEB SOCKET")
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(recordWithDoc))
+    }
+  })
   res.status(200).json(record)
 }
 
@@ -81,11 +87,7 @@ export const createBin = async (req: Request, res: Response) => {
   if (req.cookies.session_id) {
     session_id = req.cookies.session_id
   } else {
-    session_id = uuidv4()
-    res.cookie('session_id', session_id, {
-      maxAge: MS_IN_MONTH,
-      httpOnly: true,
-    })
+    session_id = utils.setSessionId(res)
   }
 
   const query = "INSERT INTO bins (id, session_id) VALUES ($1, $2) RETURNING *"
