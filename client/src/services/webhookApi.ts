@@ -1,6 +1,5 @@
 import axios from 'axios'
 import type { Payload } from '../utils/types'
-import { getCookie } from '../utils/helperFunctions'
 
 const baseUrl = import.meta.env.VITE_WEBHOOK_URL
 const binsUrl = baseUrl + '/bins'
@@ -9,19 +8,16 @@ const recordsUrl = (bin_id: string) => binUrl(bin_id) + '/records'
 const recordUrl = (bin_id: string, record_id: string) => recordsUrl(bin_id) + '/' + record_id
 
 export const getBins = async () => {
-  console.log("SESSION ID", getCookie('session_id'))
   const res = await axios.get(baseUrl, { withCredentials: true })
   return res.data
 }
 
 export const getBin = async (bin_id: string) => {
-  console.log(binUrl(bin_id))
   const res = await axios.get(binUrl(bin_id), { withCredentials: true })
   return res.data
 }
 
 export const getRecords = async (bin_id: string) => {
-  console.log(recordsUrl(bin_id))
   const res = await axios.get(recordsUrl(bin_id), { withCredentials: true })
   return res.data
 }
