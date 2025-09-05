@@ -24,11 +24,15 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">
-
       {(view === 'home' || view === 'modal') && (
         <>
           <main className="flex-[3] w-full p-6 md:p-10">
-            <h1 className="text-2xl font-semibold mb-6">Create a New Bin</h1>
+            <header className="w-full bg-gray-800 dark:bg-gray-900 shadow-md rounded-b-xl p-6 flex justify-center items-center">
+              <h1 className="text-3xl md:text-4xl font-bold text-white dark:text-gray-100 tracking-wide">
+                Request Bin
+              </h1>
+            </header>
+            <h1 className="text-xl font-semibold mb-6">Create a New Bin</h1>
             {/* import.meta.env.VITE_WEBHOOK_URL */}
             <Form
               setBins={setBins}
