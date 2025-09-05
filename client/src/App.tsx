@@ -11,7 +11,8 @@ function App() {
   const [view, setView] = useState<AppView>('home'); // controls which components are visible
   const [bins, setBins] = useState<BinInterface[]>([]);
   const [selectedBin, setSelectedBin] = useState<BinInterface | undefined>();
-  const [records, setRecords] = useState<RecordWithDoc[] | []>([]);
+  const [records, setRecords] = useState<RecordWithDoc[]>([]);
+  console.log(document.cookie)
 
   useEffect(() => {
     const fetchBins = async () => {
@@ -73,10 +74,10 @@ function App() {
 
       {/* Bin records view */}
       {view === 'bins' && selectedBin &&
-      <div className="flex-1 flex justify-center">
-  <div className="w-full max-w-5xl bg-gray dark:bg-gray-900 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5">
-        <BinPage setBins={setBins} selectedBin={selectedBin} records={records} setView={setView} setSelectedBin={setSelectedBin} setRecords={setRecords} />
-        </div>
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-5xl bg-gray dark:bg-gray-900 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5">
+            <BinPage setBins={setBins} selectedBin={selectedBin} records={records} setView={setView} setSelectedBin={setSelectedBin} setRecords={setRecords} />
+          </div>
         </div>
       }
 

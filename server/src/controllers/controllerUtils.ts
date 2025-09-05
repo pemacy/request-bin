@@ -11,7 +11,11 @@ const MS_IN_MONTH = MS_IN_DAY * 30
 
 export const setSessionId = (res: Response) => {
   const session_id = uuidv4()
-  res.set('Set-Cookie', `session_id=${session_id} max-age=${MS_IN_MONTH} httpOnly=true`)
+  res.cookie('session_id', session_id, {
+    maxAge: MS_IN_MONTH,
+    path: '/',
+    sameSite: 'lax'
+  })
   return session_id
 }
 
