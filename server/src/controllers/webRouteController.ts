@@ -7,7 +7,6 @@ import { wss } from '../server'
 // GET '/'
 export const getBins = async (req: Request, res: Response) => {
   if (req.cookies.session_id) {
-    console.log('SESSION ID:', req.cookies.session_id)
     const session_id = req.cookies.session_id
     const query = 'SELECT * FROM bins WHERE session_id = $1'
     const values = [session_id]
@@ -15,7 +14,7 @@ export const getBins = async (req: Request, res: Response) => {
     console.log(query, '- VALUES:', values)
     res.json(bins.rows)
   } else {
-    utils.setSessionId(res)
+    const session_id = utils.setSessionId(res)
     res.json([])
   }
 }
