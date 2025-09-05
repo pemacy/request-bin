@@ -11,7 +11,10 @@ const handleOnSubmit = async (
 ) => {
   e.preventDefault()
   const formData = new FormData(e.currentTarget)
-  const bin_id = String(formData.get('bin_id'))
+  const inputValue = String(formData.get('bin_id'))
+  const inputElement = e.currentTarget.elements.namedItem("bin_id") as HTMLInputElement;
+  const placeholder = inputElement.placeholder;
+  const bin_id = inputValue.trim() || placeholder;
   try {
     const newBin = await webhookApi.createBin(bin_id)
     if (!newBin) throw new Error('Form handleOnSubmit: api returned undefined')
@@ -39,10 +42,10 @@ const Form = ({ setBins, setView, setSelectedBin }: FormProps) => {
         </label>
         <input
           type="text"
-          value={bin_id}
+          placeholder={bin_id}
+          defaultValue=''
           name="bin_id"
           className="bg-gray-900 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-sky-600"
-          readOnly
         />
       </fieldset>
       <button
