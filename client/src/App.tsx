@@ -42,7 +42,7 @@ function App() {
         <>
           <main className="flex-[3] w-full p-6 md:p-10">
             <h1 className="text-2xl font-semibold mb-6">Create a New Bin</h1>
-            {import.meta.env.VITE_WEBHOOK_URL}
+            {/* import.meta.env.VITE_WEBHOOK_URL */}
             <Form
               setBins={setBins}
               setView={setView}

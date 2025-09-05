@@ -27,8 +27,7 @@ export const getRecords = async (bin_id: string) => {
 }
 
 export const createBin = async (bin_id: string) => {
-  console.log("SESSION ID", getCookie('session_id'))
-  const res = await axios.post(binUrl(bin_id), { withCredentials: true })
+  const res = await axios.post(binUrl(bin_id), {}, { withCredentials: true })
   return res.data
 }
 

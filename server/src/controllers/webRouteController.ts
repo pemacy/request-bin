@@ -6,9 +6,7 @@ import { wss } from '../server'
 
 // GET '/'
 export const getBins = async (req: Request, res: Response) => {
-  console.log("COOKIES:", req.cookies)
   if (req.cookies.session_id) {
-    console.log('SESSION ID:', req.cookies.session_id)
     const session_id = req.cookies.session_id
     const query = 'SELECT * FROM bins WHERE session_id = $1'
     const values = [session_id]
@@ -81,8 +79,6 @@ export const createRecord = async (req: Request, res: Response) => {
 
 // POST '/bins/new/:bin_id'
 export const createBin = async (req: Request, res: Response) => {
-  console.log("COOKIES:", req.cookies)
-  console.log("SESSION ID COOKIE:", req.cookies.session_id)
   // request will have name of bin
   const bin_id = req.params.bin_id
   let session_id: string

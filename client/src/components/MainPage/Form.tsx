@@ -31,7 +31,7 @@ const Form = ({ setBins, setView, setSelectedBin }: FormProps) => {
   return (
     <form
       onSubmit={(e) => handleOnSubmit(e, setBins, setSelectedBin, setView)}
-      className="max-w-md bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-md space-y-4"
+      className="max-w-md bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-md space-y-4 mx-auto"
     >
       <fieldset className="flex flex-col space-y-1">
         <label htmlFor="bin_id" className="text-sm font-medium text-gray-300">
