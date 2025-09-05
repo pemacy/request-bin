@@ -32,7 +32,6 @@ test('createRecord', async () => {
 
   const pkg = { a: 1 }
   const record = await webhookApi.createRecord(binId, pkg)
-  console.log(record)
   expect(record.bin_id).toBe(binId)
 })
 
