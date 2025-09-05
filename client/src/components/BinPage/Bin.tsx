@@ -59,7 +59,9 @@ const Bin = ({ selectedBin, records }: BinProps) => {
         </p>
       </div>
 
+
       {/* Individual Records list */}
+
       <div className="space-y-4">
         {records.map((record) => (
           <Record key={record.id} record={record} />
@@ -70,4 +72,3 @@ const Bin = ({ selectedBin, records }: BinProps) => {
 };
 
 export default Bin;
-

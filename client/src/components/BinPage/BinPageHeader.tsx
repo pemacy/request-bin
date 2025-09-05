@@ -36,7 +36,6 @@ const removeBin = async (
   setSelectedBin(undefined)
   setRecords([]);
   const bins = await getBins();
-  console.log(bins);
   setBins(bins);
 }
 

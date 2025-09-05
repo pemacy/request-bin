@@ -12,7 +12,6 @@ function App() {
   const [bins, setBins] = useState<BinInterface[]>([]);
   const [selectedBin, setSelectedBin] = useState<BinInterface | undefined>();
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
-  console.log(document.cookie)
 
   useEffect(() => {
     const fetchBins = async () => {
@@ -22,18 +21,6 @@ function App() {
 
     fetchBins()
   }, [])
-
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3000");
-
-    ws.onmessage = (event) => {
-      const record: RecordWithDoc = JSON.parse(event.data);
-
-      if (selectedBin && record.bin_id === selectedBin.id) {
-        setRecords([...records, record]);
-      }
-    };
-  }, [selectedBin])
 
   return (
     <div className="min-h-screen bg-gray-900 rounded-lg text-white flex flex-col md:flex-row">

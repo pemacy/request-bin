@@ -4,11 +4,8 @@ import type { RecordComponentProps } from '../../utils/types';
 const Record = ({ record }: RecordComponentProps) => {
   const [headerVisible, setHeaderVisible] = useState<boolean>(false);
   const [bodyVisible, setBodyVisible] = useState<boolean>(false);
-  console.log(record)
-  console.log(Object.keys(record))
 
   const handleHeaderClick = () => {
-    console.log(record.headers)
     setHeaderVisible(!headerVisible);
   }
 
