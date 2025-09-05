@@ -14,6 +14,10 @@ function App() {
   const [records, setRecords] = useState<RecordWithDoc[]>([]);
 
   useEffect(() => {
+    document.title = "Request Bin";
+  }, [selectedBin]);
+
+  useEffect(() => {
     const fetchBins = async () => {
       const bins = await webhookApi.getBins()
       setBins(bins)
